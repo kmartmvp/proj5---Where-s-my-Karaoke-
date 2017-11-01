@@ -17,9 +17,9 @@ To run, navigate to clone location. To install for the first time, run
 make install
 ```
 and then 
-''' bash
+``` bash
 make start
-'''
+```
 to start Flask server. Use `make stop` to stop the server after pressing ``CNTRL + C`` to exit.
 
 To run without make, navigate to ../mapping and 
@@ -30,4 +30,5 @@ However, this requires that you have all necessary modules installed.
 
 ## Author Information
 Michael Hagel
+
 Email: mhagel@uoregon.edu
