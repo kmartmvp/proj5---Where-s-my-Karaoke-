@@ -8,7 +8,7 @@
 
 # Many recipes need to be run in the virtual environment, 
 # so run them as $(INVENV) command
-INVENV = env/bin/activate ;
+INVENV = . env/bin/activate ;
 
 ##
 ##  Virtual environment
