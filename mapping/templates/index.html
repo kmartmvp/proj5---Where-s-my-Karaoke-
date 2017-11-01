@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+    <title>Project 5: Map</title>
+    <head>
+        <!-- LeafletJS stylesheet and JS. Reference: http://leafletjs.com/examples/quick-start/ -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+        integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+        integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+        crossorigin=""></script>
+    </head>
+        <link rel="stylesheet" href="/static/styles/index.css"/>
+    <body>
+        <!-- Map located in div below -->
+       <div id="mapid"></div> 
+       <!-- Script to display map in above div -->
+       <script type="text/javascript">
+       // Reference: More or less the get srtaed guide for displying a map in Leaflet.js 
+       // http://leafletjs.com/examples/quick-start/
+       var myMap = L.map('mapid', {
+           center: [44.056748,-123.116207],
+           zoom: 13
+       });
+
+       L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.satellite',
+            accessToken: "sk.eyJ1IjoibWhhZ2VsIiwiYSI6ImNqOWR2cnBrYTIzeW0zM3M0azJxZnVobGUifQ.MwR8DuvEr_tConB0AWLpVw"
+        }).addTo(myMap);
+
+        // Reference: Also quick-start guide from leaflet
+        function onMapClick(e) {
+            L.marker(e.latlng).addTo(myMap);
+        }
+
+        myMap.on('click', onMapClick);
+
+        // Pass points of interest from flask session to Leaflet, putting a marker for each on map
+        function pointsOfInterest(lst) {
+            for(i = 0; i<lst.length; i++) {
+                // Create marker with lat-long according to parsed POI data
+                // Markers display restaurant name on mouse-over
+                L.marker([parseFloat(lst[i][1]), parseFloat(lst[i][2])], {
+                    title: lst[i][0] }).addTo(myMap);
+            }
+        }
+
+        // Referenced: https://stackoverflow.com/questions/15321431/how-to-pass-a-list-from-python-by-jinja2-to-javascript,
+        // as I wasn't sure if Jinja2 templating was used the same way in scripts as it is in other html elements.
+        pointsOfInterest({{poi|safe}});
+
+       </script>
+    </body>
+</html>
