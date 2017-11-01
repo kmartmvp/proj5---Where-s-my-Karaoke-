@@ -19,10 +19,11 @@ app.secret_key = CONFIG["SECRET_KEY"]
 @app.route("/")
 @app.route("/index")
 def index():
+    flask.g.token = CONFIG["TOKEN"]
     poi_handler()
     # Reference: Information on render_template and its use with Jinja from docs
     # http://flask.pocoo.org/docs/0.12/quickstart/
-    return flask.render_template("index.html", poi = flask.session["poi"])
+    return flask.render_template("index.html", poi = flask.session["poi"], token = flask.g.token)
 
 
 @app.errorhandler
