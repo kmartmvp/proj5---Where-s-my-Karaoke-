@@ -1,5 +1,5 @@
 ## CIS322 - Project 5
-Simple implementation of a map web application using LeafletJS and Flask.
+Simple implementation of a map web application using LeafletJS and Flask. Reverse geocoding is implemented using the [Esri Leaflet Geocoder](https://github.com/Esri/esri-leaflet) plugin
 
 ## Run/Install
 Using your own custom credentials.ini file, create one with the following format:
