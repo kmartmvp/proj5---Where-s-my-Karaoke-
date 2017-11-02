@@ -33,8 +33,9 @@ def page_not_found():
 ### POI Reading ###
 def poi_handler():
     flask.session["poi"] = []
-    # Reference for how to access current location:
+    # Reference for how to access current directory location:
     # https://stackoverflow.com/questions/4060221/how-to-reliably-open-a-file-in-the-same-directory-as-a-python-script
+    # Also, POI parsing below influenced by Andrew Hampton's driver functions in CIS313
     with open(os.path.join(sys.path[0], "POI.txt")) as f:
         n = int(f.readline().strip())
         for i in range(n):

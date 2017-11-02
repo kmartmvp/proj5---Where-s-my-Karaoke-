@@ -9,13 +9,25 @@
         <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
         integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
         crossorigin=""></script>
+
+        <!-- Load Esri Leaflet from CDN -->
+        <script src="https://unpkg.com/esri-leaflet@2.1.1/dist/esri-leaflet.js"
+        crossorigin=""></script>
+
+
+        <!-- Load Esri Leaflet Geocoder from CDN -->
+        <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder@2.2.6/dist/esri-leaflet-geocoder.css"
+            crossorigin="">
+        <script src="https://unpkg.com/esri-leaflet-geocoder@2.2.6/dist/esri-leaflet-geocoder-debug.js"
+            crossorigin=""></script>
+
     </head>
         <link rel="stylesheet" href="/static/styles/index.css"/>
     <body>
         <!-- Map located in div below -->
        <div id="mapid"></div> 
        <!-- Script to display map in above div -->
-       <script type="text/javascript">
+       <script type="text/javascript" integrity="">
        // Reference: More or less the get srtaed guide for displying a map in Leaflet.js 
        // http://leafletjs.com/examples/quick-start/
        var myMap = L.map('mapid', {
@@ -30,12 +42,16 @@
             accessToken: "{{token}}"
         }).addTo(myMap);
 
-        // Reference: Also quick-start guide from leaflet
-        function onMapClick(e) {
-            L.marker(e.latlng).addTo(myMap);
-        }
+        // Reference: Quick start guide from leaflet, as well as Esri documentation at:
+        // https://esri.github.io/esri-leaflet/examples/reverse-geocoding.html
+        // This encompasses the basic functionality of what they display on their frontpage, essentially the same thing
+        var geocodeService = L.esri.Geocoding.geocodeService();
 
-        myMap.on('click', onMapClick);
+        myMap.on('click', function(e){
+            geocodeService.reverse().latlng(e.latlng).run(function(error, result) {
+                L.marker(result.latlng).addTo(myMap).bindPopup(result.address.Match_addr).openPopup();
+            });
+        });
 
         // Pass points of interest from flask session to Leaflet, putting a marker for each on map
         function pointsOfInterest(lst) {
